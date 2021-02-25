@@ -1,3 +1,4 @@
 FLASK_SKIP_DOTENV=0
 FLASK_APP=microblog.py
 FLASK_RUN_PORT=5000
+FLASK_ENV=development
