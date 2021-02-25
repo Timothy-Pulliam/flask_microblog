@@ -5,6 +5,7 @@ from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User, Post
 from datetime import datetime
 
+
 @app.route('/')
 @app.route('/index')
 @login_required
@@ -21,6 +22,7 @@ def index():
         }
     ]
     return render_template('index.html', title='Home', user=user, posts=posts)
+
 
 # Make sure to understand this
 @app.route('/login', methods=['GET', 'POST'])
@@ -53,6 +55,7 @@ def register():
         flash('Congratulations, you are now a registered user!')
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
+
 
 @app.route('/logout')
 @login_required

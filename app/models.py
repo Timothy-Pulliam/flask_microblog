@@ -7,30 +7,21 @@ from hashlib import md5
 
 # The representation of a many-to-many relationship requires the use of an
 # auxiliary table called an association table
-followers = db.Table('followers',
+followers = db.Table(
+    'followers',
     db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
     db.Column('followed_id', db.Integer, db.ForeignKey('user.id'))
-)
+    )
+
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
-    # The User class has a new posts field, that is initialized with db.relationship.
-    # This is not an actual database field, but a high-level view of the relationship
-    # between users and posts, and for that reason it isn't in the database diagram.
-    # For a one-to-many relationship, a db.relationship field is normally defined
-    # on the "one" side, and is used as a convenient way to get access to the "many".
-    # So for example, if I have a user stored in u, the expression u.posts will run a
-    # database query that returns all the posts written by that user. The first
-    # argument to db.relationship is the model class that represents the "many"
-    # side of the relationship. This argument can be provided as a string with
-    # the class name if the model is defined later in the module. The backref
-    # argument defines the name of a field that will be added to the objects of
-    # the "many" class that points back at the "one" object. This will add a
-    # post.author expression that will return the user given a post.
 
+    # backref, let's us access posts from Posts table using
+    # user.posts attribute
     # lazy = true (return a query object so further queries can be made)
     posts = db.relationship('Post', backref='author', lazy='dynamic')
     about_me = db.Column(db.String(140))
@@ -79,15 +70,45 @@ class User(UserMixin, db.Model):
                 followers.c.follower_id == self.id).order_by(
                     Post.timestamp.desc())
 
+
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.String(140))
-    # In general, you will want to work with UTC dates and times in a server application.
+    # In general, you will want to work with UTC dates and times in a server
+    # application.
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __repr__(self):
         return '<Post {}>'.format(self.body)
+
+
+class Client(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    client_name = db.Column(db.String(120), nullable=False)
+    # Accounts are active upon creation
+    account_active = db.Column(db.Boolean(create_constraint=True), nullable=False)
+    date_joined = db.Column(db.DateTime, default=datetime.utcnow)
+    primary_contact = db.Column(db.String(120), nullable=False)
+    primary_email = db.Column(db.String(120), nullable=False)
+    # TODO: figure out how to store phone numbers reliably
+    primary_phone = db.Column(db.String(20), nullable=False)
+    secondary_contact = db.Column(db.String(120))
+    secondary_email = db.Column(db.String(120))
+    secondary_phone = db.Column(db.String(20))
+    address_id = db.Column(db.Integer, db.ForeignKey('address.id'),
+                           nullable=False)
+
+
+class Address(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    customer_id = db.Column(db.Integer, db.ForeignKey('client.id'))
+    address1 = db.Column(db.String(120), nullable=False)
+    address2 = db.Column(db.String(120))
+    city = db.Column(db.String(100), nullable=False)
+    state = db.Column(db.String(2), nullable=False)
+    country = db.Column(db.String(2), nullable=False)
+    postal_code = db.Column(db.String(16), nullable=False)
 
 
 # Because Flask-Login knows nothing about databases,
