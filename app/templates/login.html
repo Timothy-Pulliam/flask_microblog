@@ -3,26 +3,26 @@
 {% block body %}
 <h1>Sign In</h1>
 <form action="" method="post">
-    {{ form.hidden_tag() }}
-    <div class="field">
-        {{ form.username.label(class_="label") }}
+  {{ form.hidden_tag() }}
+  <div class="field">
+    {{ form.username.label(class_="label") }}
     <div class="control has-icons-left has-icons-right">
-        {{ form.username(size=32, class_="input", placeholder="Username") }}
-        <span class="icon is-small is-left">
-          <i class="fas fa-user"></i>
-        </span>
-        <span class="icon is-small is-right">
-          <i class="fas fa-check"></i>
-        </span>
+      {{ form.username(size=32, class_="input", placeholder="Username") }}
+      <span class="icon is-small is-left">
+        <i class="fas fa-user"></i>
+      </span>
+      <span class="icon is-small is-right">
+        <i class="fas fa-check"></i>
+      </span>
     </div>
   </div>
   <div class="field">
-        {{ form.password.label(class_="label") }}
+    {{ form.password.label(class_="label") }}
     <div class="control has-icons-left">
-        {{ form.password(size=32, class_="input", placeholder="Password") }}
-        <span class="icon is-small is-left">
-          <i class="fas fa-lock"></i>
-        </span>
+      {{ form.password(size=32, class_="input", placeholder="Password") }}
+      <span class="icon is-small is-left">
+        <i class="fas fa-lock"></i>
+      </span>
     </div>
   </div>
   <div class="field">
