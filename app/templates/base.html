@@ -1,87 +1,92 @@
-<DOCTYPE html>
-  <html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <title>
-      {% if title %}{{ title }} - Microblog{% else %}Welcome to Microblog{% endif %}
-    </title>
-  </head>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta property="og:title" content="Tim's Site About Nothing" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="http://localhost:5000" />
+  <meta property="og:image" content="https://pbs.twimg.com/profile_images/1364633178128994304/yM-RJE7U_400x400.jpg" />
+  <meta property="og:description" content="Tim's site built with the flask webframework and lots of duct tape." />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <title>
+    {% if title %}{{ title }} - Microblog{% else %}Welcome to Microblog{% endif %}
+  </title>
+</head>
 
-  <body>
-    <div id="app">
-      <nav class="navbar has-shadow" role="navigation" aria-label="main navigation">
-        <div class="navbar-brand">
-          <a class="navbar-item" href="https://bulma.io">
-            <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
+<body>
+  <div id="app">
+    <nav class="navbar has-shadow" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <a class="navbar-item" href="https://bulma.io">
+          <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
+        </a>
+
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample" @click="isOpen = !isOpen" v-bind:class="{'is-active': isOpen}">
+          <!-- The navbar-burger is a hamburger menu that only appears on touch devices. It has to appear as the last child of navbar-brand. It has to contain three empty span tags in order to visualize the hamburger lines or the cross (when active).-->
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div id="navbarBasicExample" class="navbar-menu" v-bind:class="{'is-active': isOpen}">
+        <div class="navbar-start">
+          <a class="navbar-item" href="{{ url_for('index') }}">
+            Home
           </a>
 
-          <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample" @click="isOpen = !isOpen" v-bind:class="{'is-active': isOpen}">
-            <!-- The navbar-burger is a hamburger menu that only appears on touch devices. It has to appear as the last child of navbar-brand. It has to contain three empty span tags in order to visualize the hamburger lines or the cross (when active).-->
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
+          <a class="navbar-item" href="https://www.google.com/search?q=water&oq=water&aqs=chrome..69i57j46i275i433j46i175i199j0i433l2j69i60l2j69i65.1838j0j7&sourceid=chrome&ie=UTF-8">
+            Water
           </a>
-        </div>
-        <div id="navbarBasicExample" class="navbar-menu" v-bind:class="{'is-active': isOpen}">
-          <div class="navbar-start">
-            <a class="navbar-item" href="{{ url_for('index') }}">
-              Home
+
+          <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link">
+              More
             </a>
 
-            <a class="navbar-item" href="https://www.google.com/search?q=water&oq=water&aqs=chrome..69i57j46i275i433j46i175i199j0i433l2j69i60l2j69i65.1838j0j7&sourceid=chrome&ie=UTF-8">
-              Water
-            </a>
-
-            <div class="navbar-item has-dropdown is-hoverable">
-              <a class="navbar-link">
-                More
+            <div class="navbar-dropdown">
+              <a class="navbar-item">
+                About
               </a>
-
-              <div class="navbar-dropdown">
-                <a class="navbar-item">
-                  About
-                </a>
-                <a class="navbar-item">
-                  Jobs
-                </a>
-                <a class="navbar-item">
-                  Contact
-                </a>
-                <hr class="navbar-divider">
-                <a class="navbar-item">
-                  Report an issue
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <div class="navbar-end">
-            <div class="navbar-item">
-              <div class="buttons">
-                {% if current_user.is_anonymous %}
-                <a class="button is-primary" href="{{ url_for('register') }}">
-                  <strong>Register</strong>
-                </a>
-                <a class="button is-light" href="{{ url_for('login') }}">
-                  Log In
-                </a>
-                {% else %}
-                <a class="button is-light" href="{{ url_for('logout') }}">
-                  Log Out
-                </a>
-                {% endif %}
-              </div>
+              <a class="navbar-item">
+                Jobs
+              </a>
+              <a class="navbar-item">
+                Contact
+              </a>
+              <hr class="navbar-divider">
+              <a class="navbar-item">
+                Report an issue
+              </a>
             </div>
           </div>
         </div>
-      </nav>
-    </div>
 
-    <!--
+        <div class="navbar-end">
+          <div class="navbar-item">
+            <div class="buttons">
+              {% if current_user.is_anonymous %}
+              <a class="button is-primary" href="{{ url_for('register') }}">
+                <strong>Register</strong>
+              </a>
+              <a class="button is-light" href="{{ url_for('login') }}">
+                Log In
+              </a>
+              {% else %}
+              <a class="button is-light" href="{{ url_for('logout') }}">
+                Log Out
+              </a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </div>
+
+  <!--
     <div class="container">
       {% with messages = get_flashed_messages() %}
       {% if messages %}
@@ -94,15 +99,26 @@
       {% endif %}
       {% endwith %}
     -->
-    {% block body %}{% endblock %}
+  {% block body %}{% endblock %}
 
-    <!--
+  <!--
     </div>
     -->
-    <!-- VUE JS development version, includes helpful console warnings -->
-    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-  </body>
 
-  </html>
+  <footer class="footer">
+    <div class="content has-text-centered">
+      <p>
+        <strong>Bulma</strong> by <a href="https://jgthms.com">Jeremy Thomas</a>. The source code is licensed
+        <a href="http://opensource.org/licenses/mit-license.php">MIT</a>. The website content
+        is licensed <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY NC SA 4.0</a>.
+      </p>
+    </div>
+  </footer>
+
+  <!-- VUE JS development version, includes helpful console warnings -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+</body>
+
+</html>
