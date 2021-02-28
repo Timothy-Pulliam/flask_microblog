@@ -6,10 +6,17 @@ from app.models import User, Post
 from datetime import datetime
 
 
+
+
+
 @app.route('/')
 @app.route('/index')
-@login_required
 def index():
+    return render_template('index.html', title="Welcome")
+
+@app.route('/dashboard')
+@login_required
+def dashboard():
     user = current_user
     posts = [
         {
@@ -21,7 +28,7 @@ def index():
             'body': 'The Avengers movie was so cool!'
         }
     ]
-    return render_template('index.html', title='Home', user=user, posts=posts)
+    return render_template('dashboard.html', title='Dashboard', user=user, posts=posts)
 
 
 # Make sure to understand this
@@ -29,7 +36,7 @@ def index():
 def login():
     # don't let users already logged in try to log in again
     if current_user.is_authenticated:
-        return redirect(url_for('index'))
+        return redirect(url_for('dashboard'))
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
@@ -38,17 +45,17 @@ def login():
             flash('Invalid username or password')
             return redirect(url_for('login'))
         login_user(user, remember=form.remember_me.data)
-        return redirect(url_for('index'))
+        return redirect(url_for('dashboard'))
     return render_template('login.html', title='Sign In', form=form)
 
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
-        return redirect(url_for('index'))
+        return redirect(url_for('dashboard'))
     form = RegistrationForm()
     if form.validate_on_submit():
-        user = User(username=form.username.data, email=form.email.data)
+        user = User(email=form.email.data)
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
@@ -67,7 +74,7 @@ def logout():
 @app.route('/user/<username>')
 @login_required
 def user(username):
-    user = User.query.filter_by(username=username).first_or_404()
+    user = User.query.filter_by(username=usernam).first_or_404()
     posts = [
         {'author': user, 'body': 'Test post #1'},
         {'author': user, 'body': 'Test post #2'}
@@ -97,3 +104,7 @@ def edit_profile():
         form.about_me.data = current_user.about_me
     return render_template('edit_profile.html', title='Edit Profile',
                            form=form)
+
+@app.route('/test')
+def test():
+    return render_template('test.html')
