@@ -29,5 +29,5 @@ RUN chown -R microblog:microblog ./
 USER microblog
 
 # Start Application
-EXPOSE 5000
+EXPOSE 5000/tcp
 ENTRYPOINT ["./boot.sh"]
