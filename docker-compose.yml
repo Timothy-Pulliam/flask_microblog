@@ -5,8 +5,8 @@ services:
     ports:
       - "5000:5000"
     volumes:
-      - .:/code
+      - ./services/web/:/home/microblog
     environment:
       FLASK_ENV: development
-  redis:
-    image: "redis:alpine"
+  # redis:
+  #   image: "redis:alpine"
