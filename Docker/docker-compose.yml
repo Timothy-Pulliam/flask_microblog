@@ -1,9 +1,10 @@
 version: "3.3"
 services:
   web_app:
+    container_name: flask_app
     build:
-      context: .
-      dockerfile: Dockerfile.web
+      context: ../
+      dockerfile: Docker/Dockerfile.app
     restart: always
     volumes:
       - data:/home/microblog
@@ -13,14 +14,15 @@ services:
     #   FLASK_ENV: development
 
   web_proxy:
-    container_name: web_proxy
-    image: nginx:alpine
+    container_name: nginx_proxy
+    build:
+      context: .
+      dockerfile: Dockerfile.proxy
     restart: always
     ports:
       - "80:80"
     volumes:
       - data:/flask:ro
-      - ./nginx/config/nginx.conf:/etc/nginx/nginx.conf:ro
     networks:
       - web
 
