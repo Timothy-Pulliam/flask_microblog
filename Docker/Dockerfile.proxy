@@ -2,3 +2,14 @@ FROM nginx:alpine
 
 WORKDIR /etc/nginx
 COPY nginx.conf nginx.conf
+COPY self-signed.conf snippets/self-signed.conf
+COPY ssl-params.conf snippets/ssl-params.conf
+
+# Create self-signed SSL cert (for testing)
+RUN apk add --update openssl
+COPY nginx-selfsigned.crt /etc/ssl/certs/nginx-selfsigned.crt
+COPY nginx-selfsigned.key /etc/ssl/private/nginx-selfsigned.key
+RUN openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
+
+EXPOSE 80/tcp
+EXPOSE 443/tcp
