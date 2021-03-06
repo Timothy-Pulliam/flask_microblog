@@ -6,8 +6,8 @@ services:
       context: ../
       dockerfile: Docker/Dockerfile.app
     restart: always
-    volumes:
-      - data:/home/microblog
+    # volumes:
+    #   - data:/home/microblog
     networks:
       - web
     # environment:
@@ -21,8 +21,9 @@ services:
     restart: always
     ports:
       - "80:80"
-    volumes:
-      - data:/flask:ro
+      - "443:443"
+    # volumes:
+    #   - data:/flask:ro
     networks:
       - web
 
